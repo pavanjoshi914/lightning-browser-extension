@@ -3,6 +3,7 @@ import { WalletIcon } from "@bitcoin-design/bitcoin-icons-react/outline";
 
 import utils from "../../common/lib/utils";
 
+import Badge from "../components/Badge";
 import Container from "../components/Container";
 
 type Accounts = Record<
@@ -44,7 +45,7 @@ function Accounts() {
                       Status
                     </th>
                     <th scope="col" className="relative px-6 py-3">
-                      <span className="sr-only">Edit</span>
+                      <span className="sr-only">Delete</span>
                     </th>
                   </tr>
                 </thead>
@@ -67,17 +68,19 @@ function Accounts() {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            Active
-                          </span>
+                          <Badge
+                            label={account.connector}
+                            color="blue-500"
+                            textColor="white"
+                          />
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <a
-                            href="#"
+                          <button
+                            onClick={() => alert("i should delete the account")}
                             className="text-red-500 hover:text-red-700"
                           >
                             Delete
-                          </a>
+                          </button>
                         </td>
                       </tr>
                     );
