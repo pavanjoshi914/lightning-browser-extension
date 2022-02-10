@@ -1,7 +1,6 @@
-import browser from "webextension-polyfill";
-
 import utils from "./utils";
 import type { Accounts, AccountInfo, SettingsStorage } from "../../types";
+import { getAccountsCache, storeAccounts } from "./cache";
 
 interface AccountInfoRes {
   currentAccountId: string;
@@ -29,12 +28,7 @@ export const swrGetAccountInfo = async (
   id: string,
   callback?: (account: AccountInfo) => void
 ): Promise<AccountInfo> => {
-  // Load account info from cache.
-  let accountsCache: { [id: string]: AccountInfo } = {};
-  const result = await browser.storage.local.get(["accounts"]);
-  if (result.accounts) {
-    accountsCache = JSON.parse(result.accounts);
-  }
+  const accountsCache = await getAccountsCache();
 
   return new Promise((resolve) => {
     if (accountsCache[id]) {
@@ -47,11 +41,9 @@ export const swrGetAccountInfo = async (
       const { alias } = response.info;
       const balance = parseInt(response.balance.balance); // TODO: handle amounts
       const account = { id, alias, balance };
-      browser.storage.local.set({
-        accounts: JSON.stringify({
-          ...accountsCache,
-          [id]: account,
-        }),
+      storeAccounts({
+        ...accountsCache,
+        [id]: account,
       });
       if (callback) callback(account);
       return resolve(account);
