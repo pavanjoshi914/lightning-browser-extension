@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
 import { WalletIcon } from "@bitcoin-design/bitcoin-icons-react/outline";
 
+import type { Accounts } from "../../types";
 import utils from "../../common/lib/utils";
 import { removeAccountFromCache } from "../../common/lib/cache";
 import { useAuth } from "../context/AuthContext";
 
 import Badge from "../components/Badge";
 import Container from "../components/Container";
-
-interface Accounts {
-  [id: string]: { config: string; connector: string; name: string };
-}
 
 function Accounts() {
   const [accounts, setAccounts] = useState<Accounts>({});
